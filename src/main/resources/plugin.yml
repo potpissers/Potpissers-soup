@@ -1,4 +1,20 @@
 name: Potpissers-default
 version: '${project.version}'
-main: com.memeasaur.potpissersdefault.Potpissers_default
+main: com.memeasaur.potpissersdefault.PotpissersDefault
 api-version: '1.21'
+commands:
+  heal:
+    description: heals player arg, or self
+    permission: op
+  feed:
+    description: feeds player arg, or self
+    permission: op
+  freeze:
+    description: freezes player arg
+    permission: op
+  unfreeze:
+    description: unfreezes player arg
+    permission: op
+  setdefaultattackspeed:
+    description: sets the default pvp attack speed for players
+    permission: op
