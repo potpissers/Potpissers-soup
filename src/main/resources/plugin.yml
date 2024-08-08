@@ -18,3 +18,11 @@ commands:
   setdefaultattackspeed:
     description: sets the default pvp attack speed for players
     permission: op
+
+  logout:
+    description: logs players out to avoid spawning combat logger
+    aliases: [log]
+  getcombattags:
+    description: returns all of the server's current combat tagged players
+    permission: op
+    aliases: [combattags]

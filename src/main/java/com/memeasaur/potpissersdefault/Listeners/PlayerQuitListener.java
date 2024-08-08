@@ -1,6 +1,7 @@
 package com.memeasaur.potpissersdefault.Listeners;
 
 import com.memeasaur.potpissersdefault.Classes.LoggerData;
+import com.memeasaur.potpissersdefault.Classes.LoggerUpdate;
 import com.memeasaur.potpissersdefault.Classes.PlayerData;
 import com.memeasaur.potpissersdefault.PotpissersDefault;
 import net.kyori.adventure.text.Component;
@@ -20,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collection;
@@ -27,6 +29,8 @@ import java.util.Collection;
 import static com.memeasaur.potpissersdefault.PotpissersDefault.loggerDataMap;
 import static com.memeasaur.potpissersdefault.PotpissersDefault.playerDataMap;
 import static com.memeasaur.potpissersdefault.Util.Constants.LoggerConstants.KEY_PIGLIN_LOGGER;
+import static com.memeasaur.potpissersdefault.PotpissersDefault.*;
+import static com.memeasaur.potpissersdefault.Util.Constants.LoggerConstants.*;
 
 public class PlayerQuitListener implements Listener {
     private final PotpissersDefault plugin; // if cd doesn't expire when piglin logger alive, full cd when login
@@ -71,6 +75,9 @@ public class PlayerQuitListener implements Listener {
             loggerDataMap.put(piglinLogger, new LoggerData(p.getUniqueId(), pi.getContents(), p.getExp()));
             pi.clear();
             p.clearActivePotionEffects();
+            // Logout + tag start
+            doCombatLoggerLogout(piglinLogger, plugin);
+            // Logout + tag end
         }
     }
     public static void getPlayerWeapon(PlayerInventory pi, EntityEquipment ee) {
@@ -126,4 +133,38 @@ public class PlayerQuitListener implements Listener {
         // SIMULATE/TRACK DURABILITY LOSS
         getPlayerWeapon(pi, ee);
     }
+
+    // Logout + tag start
+    public static void doCombatLoggerLogout(Piglin piglin, Plugin plugin) {
+        LoggerData piglinData = loggerDataMap.get(piglin);
+        piglinData.logoutTimer[0] = playerDataMap.get(piglinData.u).combatTag[0] == 0 ? SAFE_LOGOUT_TIMER : TAG_LOGOUT_TIMER;
+        piglinData.task = new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (!piglin.isValid())
+                    cancel();
+                else {
+                    piglinData.logoutTimer[0]--;
+                    if (piglin.getTarget() == null && piglin.isOnGround()) {
+                        piglin.setDancing(true);
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                if (piglin.getFallDistance() == 0)
+                                    piglin.setAI(false);
+                            }
+                        }.runTaskLater(plugin, 1L);
+                    }
+                    if (piglinData.logoutTimer[0] == 0) {
+                        loggerUpdateMap.put(piglinData.u, new LoggerUpdate(piglin.getLocation(), piglin.getHealth(), piglinData.playerInventory));
+                        // handleSaveLoggerUpdateMap
+                        loggerDataMap.remove(piglin);
+                        piglin.remove();
+                        cancel();
+                    }
+                }
+            }
+        }.runTaskTimer(plugin, 20L, 20L);
+    }
+    // Logout + tag end
 }

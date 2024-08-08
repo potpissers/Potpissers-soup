@@ -7,6 +7,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
+import static com.memeasaur.potpissersdefault.PotpissersDefault.currentlyTaggedPlayers;
 import static com.memeasaur.potpissersdefault.PotpissersDefault.playerDataMap;
 import static com.memeasaur.potpissersdefault.Util.Constants.CombatConstants.ATTACK_SPEED_DEFAULT;
 import static com.memeasaur.potpissersdefault.Util.Constants.CombatConstants.ATTACK_SPEED_STRING_MAP;
@@ -73,6 +76,16 @@ public class PotpissersOpCommands implements CommandExecutor {
                     p.sendMessage("done");
                     return true;
                 }
+                // Combat tag start
+                case "getcombattags" -> {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (UUID uuid : currentlyTaggedPlayers) {
+                        stringBuilder.append(Bukkit.getOfflinePlayer(uuid).getName());
+                        stringBuilder.append(" ");
+                    }
+                    p.sendMessage(stringBuilder.toString());
+                }
+                // Combat tag end
             }
         }
         return true;

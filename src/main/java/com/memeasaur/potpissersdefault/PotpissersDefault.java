@@ -3,6 +3,7 @@ package com.memeasaur.potpissersdefault;
 import com.memeasaur.potpissersdefault.Classes.LoggerData;
 import com.memeasaur.potpissersdefault.Classes.LoggerUpdate;
 import com.memeasaur.potpissersdefault.Classes.PlayerData;
+import com.memeasaur.potpissersdefault.Commands.LogoutCommand;
 import com.memeasaur.potpissersdefault.Commands.PotpissersOpCommands;
 import com.memeasaur.potpissersdefault.Listeners.*;
 import com.memeasaur.potpissersdefault.Listeners.EntityDamageListener;
@@ -12,10 +13,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-import java.util.WeakHashMap;
+import java.util.*;
 
 public final class PotpissersDefault extends JavaPlugin {
     public static HashMap<UUID, PlayerData> playerDataMap = new HashMap<>();
@@ -26,6 +24,9 @@ public final class PotpissersDefault extends JavaPlugin {
     public static BukkitTask saveLoggerUpdateMapTask;
     byte taskTracker = 0;
     public static boolean isServerReady = false;
+    // Combat tag start
+    public static HashSet<UUID> currentlyTaggedPlayers = new HashSet<>();
+    // Combat tag end
 
     @Override
     public void onEnable() {
@@ -45,8 +46,17 @@ public final class PotpissersDefault extends JavaPlugin {
         // Potion start
         pm.registerEvents(new PlayerLaunchProjectileListener(this), this);
         pm.registerEvents(new EntityShootBowListener(this), this);
-        pm.registerEvents(new PotionSplashListener(), this);
+        pm.registerEvents(new PotionSplashListener(this), this); // combat-tag
         // Potion end
+        // Logout start
+        doDataDeserialization();
+        LogoutCommand logoutCommand = new LogoutCommand(this);
+        getCommand("logout").setExecutor(logoutCommand);
+        pm.registerEvents(new LoggerListeners(), this);
+        pm.registerEvents(new PlayerDeathListener(), this);
+        pm.registerEvents(new AreaEffectCloudApplyListener(this), this);
+        getCommand("getcombattags").setExecutor(potpissersOpCommands);
+        // Logout end
 
         // Default start
         if (taskTracker == 0)
@@ -55,5 +65,16 @@ public final class PotpissersDefault extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {}
+    public void onDisable() {
+        // Logout + tag start
+        doDataSerialization();
+        // Logout + tag end
+    }
+    // Logout + tag start
+    void doDataDeserialization() {
+
+    }
+    void doDataSerialization() {
+    }
+    // Logout + tag end
 }

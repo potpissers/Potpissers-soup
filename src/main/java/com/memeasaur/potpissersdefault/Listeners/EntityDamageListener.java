@@ -14,15 +14,16 @@ import org.bukkit.potion.PotionType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import static com.memeasaur.potpissersdefault.Util.Constants.LoggerConstants.*;
 import static com.memeasaur.potpissersdefault.Util.Methods.LoggerUtils.doAppleConsumeLogger;
 import static com.memeasaur.potpissersdefault.PotpissersDefault.loggerDataMap;
+import static com.memeasaur.potpissersdefault.PotpissersDefault.*;
 
 public class EntityDamageListener implements Listener {
     private final PotpissersDefault plugin;
     public EntityDamageListener(PotpissersDefault plugin) {
         this.plugin = plugin;
     }
-
     @EventHandler
     void onDamageCubecore(EntityDamageEvent e) {
         switch (e.getEntity().getType()) {
@@ -30,6 +31,9 @@ public class EntityDamageListener implements Listener {
                 Piglin piglin = (Piglin) e.getEntity();
                 LoggerData piglinData = loggerDataMap.getOrDefault(piglin, null);
                 if (piglinData != null) {
+                    // Logout + tag start
+                    piglinData.logoutTimer[0] = playerDataMap.get(piglinData.u).combatTag[0] == 0 ? SAFE_LOGOUT_TIMER : TAG_LOGOUT_TIMER;
+                    // Logout + tag end
                     if (!piglinData.eating) {
                         double health = piglin.getHealth() + piglin.getAbsorptionAmount();
                         if (health <= 16) {

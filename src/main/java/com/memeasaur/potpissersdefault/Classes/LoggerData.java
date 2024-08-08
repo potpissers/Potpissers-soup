@@ -11,6 +11,9 @@ public class LoggerData {
     public final float exp;
     public boolean eating = false;
     public BukkitTask task;
+    // Logout + tag start
+    public int[] logoutTimer = new int[1];
+    // Logout + tag end
     public LoggerData(UUID u, ItemStack[] pi, float exp) {
         this.u = u;
         this.playerInventory = pi;

@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import static com.memeasaur.potpissersdefault.PotpissersDefault.playerDataMap;
+import static com.memeasaur.potpissersdefault.Util.Methods.TimerUtils.handleTimerCancel;
 
 public class PlayerMoveListener implements Listener {
     @EventHandler
@@ -18,5 +19,18 @@ public class PlayerMoveListener implements Listener {
             e.setCancelled(true);
             return;
         }
+        // Logout start
+        if (p.isSwimming()) {
+            if (data.combatTag[0] != 0)
+                p.setPose(Pose.STANDING);
+            else
+                p.setVelocity(p.getLocation().getDirection().multiply(0.07875F));
+        }
+        else if (p.isGliding() && data.combatTag[0] != 0)
+            p.setPose(Pose.STANDING);
+        if (e.hasChangedBlock()) {
+            handleTimerCancel(data, p);
+        }
+        // Logout end
     }
 }

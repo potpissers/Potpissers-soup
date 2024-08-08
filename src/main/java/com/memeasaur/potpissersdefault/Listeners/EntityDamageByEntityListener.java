@@ -15,6 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import static com.memeasaur.potpissersdefault.PotpissersDefault.loggerDataMap;
 import static com.memeasaur.potpissersdefault.PotpissersDefault.playerDataMap;
 import static com.memeasaur.potpissersdefault.Util.Constants.CombatConstants.*;
+import static com.memeasaur.potpissersdefault.Util.Methods.CombatUtils.doCombatTag;
 
 public class EntityDamageByEntityListener implements Listener {
     private final PotpissersDefault plugin;
@@ -32,6 +33,9 @@ public class EntityDamageByEntityListener implements Listener {
                     p.sendMessage("cancelled (frozen)");
                     return;
                 }
+                // Combat-tag start
+                boolean isSelfInflicted = p == p1;
+                // Combat-tag end
                 switch (e.getCause()) {
                     case ENTITY_ATTACK -> {
                         AttributeInstance attackSpeedInstance = p.getAttribute(Attribute.GENERIC_ATTACK_SPEED);
@@ -59,6 +63,15 @@ public class EntityDamageByEntityListener implements Listener {
                     }
                     // Explosions end
                 }
+                // Combat-tag start
+                if (!isSelfInflicted) {
+                    if (p1.isBlocking()) {
+                        doCombatTag(p1, plugin);
+                    }
+                    if (!e.isCancelled())
+                        doCombatTag(p, plugin);
+                }
+                // Combat-tag end
             }
             else {
                 if (e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)
