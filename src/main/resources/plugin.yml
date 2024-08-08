@@ -26,3 +26,92 @@ commands:
     description: returns all of the server's current combat tagged players
     permission: op
     aliases: [combattags]
+
+  claimspawn:
+    description: claims spawn
+    permission: op
+  unclaim:
+    description: unclaim current claim
+    permission: op
+  claimarena:
+    description: claims existing arena
+    permission: op
+  addarena:
+    description: adds arena
+    permission: op
+  removearena:
+    description: removes arena
+    permission: op
+  arenaset1:
+    description: sets first arena duel warp location
+    permission: op
+  arenaset2:
+    description: sets second arena duel warp location
+    permission: op
+  claimset1:
+    description: sets first claim corner location
+    permission: op
+  claimset2:
+    description: sets second claim corner location
+    permission: op
+
+  duel:
+    description: send/accepts duel requests
+    aliases: [1v1, fight, challenge]
+  accept:
+    description: accepts duel requests
+  anon:
+    description: 1v1 matchmaking system
+    aliases: [queue, ladder, match]
+  leavequeue:
+    description: leaves all duel request queues, including /duels
+    aliases: [dequeue, unqueue, unladder, deladder, unmatch, dematch]
+
+  save:
+    description: saves kits preference
+  removeall:
+    description: resets kit preferences
+  load:
+    description: loads kit preference
+  remove:
+    description: removes kit preference
+  loaddefault:
+    description: loads default kit
+  savedefault:
+    description: saves default kit
+    permission: op
+
+  party:
+    description: party system
+
+  spawn:
+    description: warps to spawn
+  warp:
+    description: warps system
+  tpa:
+    description: sends teleport request
+  tpahere:
+    description: sends teleportHere request
+    aliases: [tphere]
+  tpaccept:
+    description: accepts teleport request
+  tpahereaccept:
+    description: accepts teleportHere request
+    aliases: [tphereaccept]
+  addwarp:
+    description: adds warp
+    permission: op
+    aliases: [warpadd]
+  removewarp:
+    description: removes warp
+    permission: op
+    aliases: [warpremove]
+  addprivatewarp:
+    description: adds private warp
+    permission: op
+  removeprivatewarp:
+    description: removes private warp
+    permission: op
+  cubecorechest:
+    description: created auto refilling chest
+    permission: op

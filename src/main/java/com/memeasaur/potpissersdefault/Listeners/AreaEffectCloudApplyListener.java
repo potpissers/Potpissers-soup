@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.AreaEffectCloudApplyEvent;
 
+import static com.memeasaur.potpissersdefault.PotpissersDefault.playerDataMap;
+import static com.memeasaur.potpissersdefault.Util.Constants.ClaimsConstants.SPAWN_CLAIM;
 import static com.memeasaur.potpissersdefault.Util.Constants.PotionConstants.DEBUFF_EFFECTS;
 import static com.memeasaur.potpissersdefault.Util.Methods.CombatUtils.doCombatTag;
 
@@ -22,6 +24,10 @@ public class AreaEffectCloudApplyListener implements Listener {
             if (DEBUFF_EFFECTS.contains(tp.getPotionMeta().getBasePotionType())) {
                 for (LivingEntity entity : e.getAffectedEntities())
                     if (entity instanceof Player p1) {
+                        if (playerDataMap.get(p1.getUniqueId()).currentClaim.equals(SPAWN_CLAIM)) {
+                            e.setCancelled(true);
+                            return;
+                        }
                         doCombatTag(p, plugin);
                     }
             }

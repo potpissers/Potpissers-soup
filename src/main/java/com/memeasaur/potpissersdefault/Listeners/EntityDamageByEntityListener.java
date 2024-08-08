@@ -1,5 +1,6 @@
 package com.memeasaur.potpissersdefault.Listeners;
 
+import com.memeasaur.potpissersdefault.Classes.ClaimCoordinate;
 import com.memeasaur.potpissersdefault.Classes.PlayerData;
 import com.memeasaur.potpissersdefault.PotpissersDefault;
 import net.kyori.adventure.text.Component;
@@ -15,7 +16,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import static com.memeasaur.potpissersdefault.PotpissersDefault.loggerDataMap;
 import static com.memeasaur.potpissersdefault.PotpissersDefault.playerDataMap;
 import static com.memeasaur.potpissersdefault.Util.Constants.CombatConstants.*;
+import static com.memeasaur.potpissersdefault.PotpissersDefault.*;
 import static com.memeasaur.potpissersdefault.Util.Methods.CombatUtils.doCombatTag;
+import static com.memeasaur.potpissersdefault.PotpissersDefault.*;
+import static com.memeasaur.potpissersdefault.Util.Constants.ClaimsConstants.SPAWN_CLAIM;
+import static com.memeasaur.potpissersdefault.Util.Constants.ClaimsConstants.WILDERNESS_CLAIM;
 
 public class EntityDamageByEntityListener implements Listener {
     private final PotpissersDefault plugin;
@@ -38,16 +43,18 @@ public class EntityDamageByEntityListener implements Listener {
                 // Combat-tag end
                 switch (e.getCause()) {
                     case ENTITY_ATTACK -> {
-                        AttributeInstance attackSpeedInstance = p.getAttribute(Attribute.GENERIC_ATTACK_SPEED);
-                        if (attackSpeedInstance.getBaseValue() != ATTACK_SPEED_DEFAULT) {
-                            attackSpeedInstance.setBaseValue(ATTACK_SPEED_DEFAULT);
-                            p.sendActionBar(Component.text("attack speed: " + ATTACK_SPEED_DEFAULT));
-                        }
-                        if (ATTACK_SPEED_DEFAULT != ATTACK_SPEED_VANILLA && p.getAttackCooldown() != 1) {
-                            e.setCancelled(true);
-                            p.sendActionBar(Component.text("attack cancelled (cooldown)"));
-                            p.resetCooldown();
-                            return;
+                        if (data.isDueling == null && (data.partyReference.get() == null || data.partyReference.get().isDueling == null)) { // Claims
+                            AttributeInstance attackSpeedInstance = p.getAttribute(Attribute.GENERIC_ATTACK_SPEED);
+                            if (attackSpeedInstance.getBaseValue() != ATTACK_SPEED_DEFAULT) {
+                                attackSpeedInstance.setBaseValue(ATTACK_SPEED_DEFAULT);
+                                p.sendActionBar(Component.text("attack speed: " + ATTACK_SPEED_DEFAULT));
+                            }
+                            if (ATTACK_SPEED_DEFAULT != ATTACK_SPEED_VANILLA && p.getAttackCooldown() != 1) {
+                                e.setCancelled(true);
+                                p.sendActionBar(Component.text("attack cancelled (cooldown)"));
+                                p.resetCooldown();
+                                return;
+                            } // Claims
                         }
                         if (p.isSprinting()) new BukkitRunnable() {
                             @Override
@@ -74,13 +81,17 @@ public class EntityDamageByEntityListener implements Listener {
                 // Combat-tag end
             }
             else {
-                if (e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)
-                        && ATTACK_SPEED_DEFAULT != ATTACK_SPEED_VANILLA) {
-                    if (p.getAttribute(Attribute.GENERIC_ATTACK_SPEED).getBaseValue() != ATTACK_SPEED_REVERTED_VANILLA) {
-                        p.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(ATTACK_SPEED_REVERTED_VANILLA);
-                        p.sendActionBar(Component.text("attack speed: vanilla"));
+                // Claims start
+                PlayerData data = playerDataMap.get(p.getUniqueId());
+                // Claims end
+                if (data.isDueling == null && (data.partyReference.get() == null || data.partyReference.get().isDueling == null)) // Claims
+                    if (e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)
+                            && ATTACK_SPEED_DEFAULT != ATTACK_SPEED_VANILLA) {
+                        if (p.getAttribute(Attribute.GENERIC_ATTACK_SPEED).getBaseValue() != ATTACK_SPEED_REVERTED_VANILLA) {
+                            p.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(ATTACK_SPEED_REVERTED_VANILLA);
+                            p.sendActionBar(Component.text("attack speed: vanilla"));
+                        }
                     }
-                }
             }
         }
         if (e.getEntity() instanceof Piglin piglin && loggerDataMap.containsKey(piglin)) {

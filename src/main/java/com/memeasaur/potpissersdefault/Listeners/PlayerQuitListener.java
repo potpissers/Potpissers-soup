@@ -28,6 +28,7 @@ import java.util.Collection;
 
 import static com.memeasaur.potpissersdefault.PotpissersDefault.loggerDataMap;
 import static com.memeasaur.potpissersdefault.PotpissersDefault.playerDataMap;
+import static com.memeasaur.potpissersdefault.Util.Constants.ClaimsConstants.SPAWN_CLAIM;
 import static com.memeasaur.potpissersdefault.Util.Constants.LoggerConstants.KEY_PIGLIN_LOGGER;
 import static com.memeasaur.potpissersdefault.PotpissersDefault.*;
 import static com.memeasaur.potpissersdefault.Util.Constants.LoggerConstants.*;
@@ -41,7 +42,7 @@ public class PlayerQuitListener implements Listener {
     void onPlayerQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
         PlayerData data = playerDataMap.get(p.getUniqueId());
-        if (p.getGameMode().equals(GameMode.SURVIVAL)) { // ADVENTURE DOESN't spawn logger
+        if (p.getGameMode().equals(GameMode.SURVIVAL) && !data.currentClaim.equals(SPAWN_CLAIM)) { // ADVENTURE DOESN't spawn logger + Claims
             Location location = p.getLocation();
             data.logger = (Piglin) location.getWorld().spawnEntity(location, EntityType.PIGLIN);
             Piglin piglinLogger = data.logger;

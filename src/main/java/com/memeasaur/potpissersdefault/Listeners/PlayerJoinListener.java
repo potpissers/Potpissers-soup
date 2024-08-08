@@ -41,6 +41,9 @@ public class PlayerJoinListener implements Listener {
         o.numberFormat(NumberFormat.blank());
         scoreboard.registerNewTeam(SCOREBOARD_COMBAT).addEntry(SCOREBOARD_COMBAT);
         // Logout + tag end
+        // Claims start
+        p.setCollidable(true);
+        // Claims end
         p.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(ATTACK_SPEED_DEFAULT);
         PlayerData data = playerDataMap.get(u);
         LoggerData piglinData = loggerDataMap.getOrDefault(data.logger, null);
