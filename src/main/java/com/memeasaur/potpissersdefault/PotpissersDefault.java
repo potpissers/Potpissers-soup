@@ -5,6 +5,8 @@ import com.memeasaur.potpissersdefault.Classes.LoggerUpdate;
 import com.memeasaur.potpissersdefault.Classes.PlayerData;
 import com.memeasaur.potpissersdefault.Commands.PotpissersOpCommands;
 import com.memeasaur.potpissersdefault.Listeners.*;
+import com.memeasaur.potpissersdefault.Listeners.EntityDamageListener;
+import com.memeasaur.potpissersdefault.Listeners.PlayerLaunchProjectileListener;
 import org.bukkit.entity.Piglin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,7 +25,7 @@ public final class PotpissersDefault extends JavaPlugin {
     public static BukkitTask saveLoggerDataMapTask;
     public static BukkitTask saveLoggerUpdateMapTask;
     byte taskTracker = 0;
-    public static boolean isServerReady = false; // maybe somebody could sneak in with this idk
+    public static boolean isServerReady = false;
 
     @Override
     public void onEnable() {
@@ -40,6 +42,11 @@ public final class PotpissersDefault extends JavaPlugin {
         for (String commandName : List.of("heal", "feed", "freeze", "unfreeze", "setdefaultattackspeed"))
             getCommand(commandName).setExecutor(potpissersOpCommands);
         // Default end
+        // Potion start
+        pm.registerEvents(new PlayerLaunchProjectileListener(this), this);
+        pm.registerEvents(new EntityShootBowListener(this), this);
+        pm.registerEvents(new PotionSplashListener(), this);
+        // Potion end
 
         // Default start
         if (taskTracker == 0)
