@@ -6,21 +6,28 @@ import com.memeasaur.potpissersdefault.PotpissersDefault;
 import net.kyori.adventure.text.Component;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import static com.memeasaur.potpissersdefault.PotpissersDefault.loggerDataMap;
 import static com.memeasaur.potpissersdefault.PotpissersDefault.playerDataMap;
 import static com.memeasaur.potpissersdefault.Util.Constants.CombatConstants.*;
 import static com.memeasaur.potpissersdefault.PotpissersDefault.*;
+import static com.memeasaur.potpissersdefault.Util.Constants.CombatConstants.KNOCKBACK_CD;
+import static com.memeasaur.potpissersdefault.Util.Constants.ScoreboardConstants.*;
 import static com.memeasaur.potpissersdefault.Util.Methods.CombatUtils.doCombatTag;
 import static com.memeasaur.potpissersdefault.PotpissersDefault.*;
 import static com.memeasaur.potpissersdefault.Util.Constants.ClaimsConstants.SPAWN_CLAIM;
 import static com.memeasaur.potpissersdefault.Util.Constants.ClaimsConstants.WILDERNESS_CLAIM;
+import static com.memeasaur.potpissersdefault.Util.Methods.TimerUtils.doOrUpdateScoreboardTimer;
 
 public class EntityDamageByEntityListener implements Listener {
     private final PotpissersDefault plugin;

@@ -119,3 +119,7 @@ commands:
   cubecoresign:
     description: creates automatic command entering sign
     permission: op
+
+  getgrapple:
+    description: gets custom item "grapple"
+    permission: op

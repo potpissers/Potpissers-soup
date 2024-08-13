@@ -22,8 +22,7 @@ import java.util.UUID;
 
 import static com.memeasaur.potpissersdefault.PotpissersDefault.*;
 import static com.memeasaur.potpissersdefault.Util.Constants.CombatConstants.ATTACK_SPEED_DEFAULT;
-import static com.memeasaur.potpissersdefault.Util.Constants.ScoreboardConstants.SCOREBOARD_COMBAT;
-import static com.memeasaur.potpissersdefault.Util.Constants.ScoreboardConstants.SCOREBOARD_STRING;
+import static com.memeasaur.potpissersdefault.Util.Constants.ScoreboardConstants.*;
 
 public class PlayerJoinListener implements Listener {
     @EventHandler

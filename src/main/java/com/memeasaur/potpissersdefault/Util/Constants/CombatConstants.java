@@ -15,4 +15,8 @@ public class CombatConstants {
     // Combat tag start
     public static final int COMBAT_TAG = 120; // make command
     // Combat tag end
+    // Grapple start
+    public static final int GRAPPLE_CD = 12;
+    public static final int KNOCKBACK_CD = 4;
+    // Grapple end
 }

@@ -5,6 +5,7 @@ import com.memeasaur.potpissersdefault.Commands.Claims.ClaimsOpCommands;
 import com.memeasaur.potpissersdefault.Commands.CubecoreSignOpCommand;
 import com.memeasaur.potpissersdefault.Commands.Duels.DuelsCommands;
 import com.memeasaur.potpissersdefault.Commands.Duels.DuelsTabCompleter;
+import com.memeasaur.potpissersdefault.Commands.GrappleOpCommand;
 import com.memeasaur.potpissersdefault.Commands.Kits.KitsCommands;
 import com.memeasaur.potpissersdefault.Commands.Kits.KitsOpCommands;
 import com.memeasaur.potpissersdefault.Commands.Kits.KitsTabExecutor;
@@ -19,6 +20,8 @@ import com.memeasaur.potpissersdefault.Commands.Warps.WarpsTabExecutor;
 import com.memeasaur.potpissersdefault.Listeners.EntityDamageListener;
 import com.memeasaur.potpissersdefault.Listeners.PlayerLaunchProjectileListener;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.entity.FishHook;
 import org.bukkit.entity.Piglin;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -73,6 +76,9 @@ public final class PotpissersDefault extends JavaPlugin {
     public static BukkitTask saveDefaultKitTask;
     public static final Object lock = new Object();
     // Claims end
+    // Grapple start
+    public static final WeakHashSet<FishHook> grappleHooks = new WeakHashSet<>();
+    // Grapple end
     @Override
     public void onEnable() {
         // Default start
@@ -149,6 +155,12 @@ public final class PotpissersDefault extends JavaPlugin {
         pm.registerEvents(new PlayerOpenSignListener(), this);
         pm.registerEvents(new PlayerInteractListener(), this);
         // Claims end
+        // Grapple start
+        pm.registerEvents(new ProjectileHitListener(this), this);
+        pm.registerEvents(new PlayerFishListener(this), this);
+        GrappleOpCommand grappleOpCommand = new GrappleOpCommand();
+        getCommand("getgrapple").setExecutor(grappleOpCommand);
+        // Grapple end
 
         // Cubecore sign start
         getCommand("cubecoresign").setExecutor(new CubecoreSignOpCommand());

@@ -40,6 +40,9 @@ public class PlayerData { // implements configSerial
     public int tpaReadyTimer; public transient BukkitTask tpaReadyTask;
     public HashMap<Location, AtomicInteger> teleportTimers = new HashMap<>(); public transient HashSet<BukkitTask> teleportTasks = new HashSet<>(); // mutableInteger
     // Duels/claims end
+    // Grapple start
+    public int[] movementCd = new int[1]; public transient BukkitTask movementCdTask;
+    // Grapple end
     public PlayerData(UUID u) {
         // Default start
         this.uuid = u;
