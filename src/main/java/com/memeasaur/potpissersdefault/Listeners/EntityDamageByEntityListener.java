@@ -52,6 +52,12 @@ public class EntityDamageByEntityListener implements Listener {
                             }
                         }.runTaskLater(plugin, 1L);
                     }
+                    // Explosions start
+                    case ENTITY_EXPLOSION, BLOCK_EXPLOSION -> {
+                        p1.setHealth(Math.max(p1.getHealth() - e.getDamage() / 2.25, 0));
+                        e.setDamage(0);
+                    }
+                    // Explosions end
                 }
             }
             else {
