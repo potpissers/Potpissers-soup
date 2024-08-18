@@ -1,8 +1,10 @@
 package com.memeasaur.potpissersdefault.Listeners;
 
 import com.memeasaur.potpissersdefault.Classes.PlayerData;
+import net.kyori.adventure.text.Component;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,6 +41,16 @@ public class PlayerInteractListener implements Listener {
                             }
                         }
                     }
+                    // Movement cooldown start
+                    case BOW -> {
+                        PlayerData data = playerDataMap.get(p.getUniqueId());
+                        if (is.getEnchantmentLevel(Enchantment.PUNCH) > 0 && data.movementCd[0] != 0) {
+                            e.setCancelled(true);
+                            p.sendActionBar(Component.text("movement cd active"));
+                            return;
+                        }
+                    }
+                    // Movement cooldown end
                 }
             // Grapple end
         }

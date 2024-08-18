@@ -63,6 +63,18 @@ public class EntityDamageByEntityListener implements Listener {
                                 return;
                             } // Claims
                         }
+                        // Movement cd start
+                        ItemStack weapon = p.getInventory().getItemInMainHand();
+                        if (weapon.getEnchantmentLevel(Enchantment.KNOCKBACK) > 0) {
+                            if (data.movementCd[0] == 0) {
+                                doOrUpdateScoreboardTimer(p, p.getScoreboard(), SCOREBOARD_MOVEMENT, data.movementCd, null, SCORE_MOVEMENT, KNOCKBACK_CD * weapon.getEnchantmentLevel(Enchantment.KNOCKBACK), plugin);
+                            } else {
+                                e.setCancelled(true);
+                                p.sendMessage("cancelled (movement cd)");
+                            }
+
+                        }
+                        // Movement cd end
                         if (p.isSprinting()) new BukkitRunnable() {
                             @Override
                             public void run() {
@@ -80,6 +92,16 @@ public class EntityDamageByEntityListener implements Listener {
                     case PROJECTILE -> {
                         switch (e.getDamager().getType()) {
                             case FISHING_BOBBER -> e.setCancelled(true);
+                            // Movement cd start
+                            case ARROW -> {
+                                Arrow aa = (Arrow) e.getDamager();
+                                handleKnockbackArrow(aa, data, e, p, plugin);
+                            }
+                            case SPECTRAL_ARROW -> {
+                                SpectralArrow aa = (SpectralArrow) e.getDamager();
+                                handleKnockbackArrow(aa, data, e, p, plugin);
+                            }
+                            // Movement cd end
                         }
                     }
                     // Fishing rod end
@@ -113,4 +135,16 @@ public class EntityDamageByEntityListener implements Listener {
             piglin.setAI(true);
         }
     }
+    // Movement cd start
+    void handleKnockbackArrow(AbstractArrow aa, PlayerData data, Cancellable e, Player p, Plugin plugin) {
+        if (aa.getWeapon().getEnchantmentLevel(Enchantment.PUNCH) > 0) {
+            if (data.movementCd[0] == 0) {
+                doOrUpdateScoreboardTimer(p, p.getScoreboard(), SCOREBOARD_MOVEMENT, data.movementCd, null, SCORE_MOVEMENT, KNOCKBACK_CD * aa.getWeapon().getEnchantmentLevel(Enchantment.PUNCH), plugin);
+            } else {
+                e.setCancelled(true);
+                p.sendMessage("punch arrow cancelled (movement cd)");
+            }
+        }
+    }
+    // Movement cd end
 }

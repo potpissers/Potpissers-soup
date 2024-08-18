@@ -42,6 +42,9 @@ public class PlayerFishListener implements Listener {
                     BoundingBox pBB = p.getBoundingBox();
                     p.setVelocity(p.getVelocity().add(e.getCaught().getBoundingBox().getCenter().subtract(new Vector(pBB.getCenterX(), pBB.getMinY(), pBB.getCenterZ())).multiply(0.25F)));
                     p.getWorld().playSound(p, Sound.ENTITY_ZOMBIE_INFECT, 1F, 1F);
+                    // Movement cd start
+                    doOrUpdateScoreboardTimer(p, p.getScoreboard(), SCOREBOARD_MOVEMENT, data.movementCd, null, SCORE_MOVEMENT, GRAPPLE_CD, plugin);
+                    // Movement cd end
                     return;
                 }
                 float radius = 0.1255F; // .25x.25x.25 -> .26x.26x.26 for ceilings/walls
@@ -70,6 +73,9 @@ public class PlayerFishListener implements Listener {
                                     is.setItemMeta(im);
 
                                     world.playSound(p, Sound.ENTITY_ZOMBIE_INFECT, 1F, 1F);
+                                    // Movement cd start
+                                    doOrUpdateScoreboardTimer(p, p.getScoreboard(), SCOREBOARD_MOVEMENT, data.movementCd, null, SCORE_MOVEMENT, GRAPPLE_CD, plugin);
+                                    // Movement cd end
                                     return;
                                 }
                             }

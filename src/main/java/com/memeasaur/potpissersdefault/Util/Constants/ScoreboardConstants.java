@@ -7,4 +7,8 @@ public class ScoreboardConstants {
     public static final String SCOREBOARD_TELEPORT = "teleport: ";
     public static final int SCORE_TELEPORT = 1;
     // Claims end
+    // Movement cd start
+    public static final String SCOREBOARD_MOVEMENT = "movement: ";
+    public static final int SCORE_MOVEMENT = 2;
+    // Movement cd end end
 }
