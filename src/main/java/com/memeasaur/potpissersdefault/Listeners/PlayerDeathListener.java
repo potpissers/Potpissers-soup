@@ -32,6 +32,9 @@ public class PlayerDeathListener implements Listener {
         Player p = e.getPlayer();
         PlayerData data = playerDataMap.get(p.getUniqueId());
         data.combatTag[0] = 0;
+        // Lightning start
+        p.getWorld().strikeLightningEffect(p.getLocation());
+        // Lightning end
         // Dueling start
         Party party = data.partyReference.get();
         if (party != null && party.isDueling != null) {
