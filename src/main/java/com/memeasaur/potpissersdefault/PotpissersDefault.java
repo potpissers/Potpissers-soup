@@ -2,6 +2,7 @@ package com.memeasaur.potpissersdefault;
 
 import com.memeasaur.potpissersdefault.Classes.*;
 import com.memeasaur.potpissersdefault.Commands.Claims.ClaimsOpCommands;
+import com.memeasaur.potpissersdefault.Commands.CubecoreSignOpCommand;
 import com.memeasaur.potpissersdefault.Commands.Duels.DuelsCommands;
 import com.memeasaur.potpissersdefault.Commands.Duels.DuelsTabCompleter;
 import com.memeasaur.potpissersdefault.Commands.Kits.KitsCommands;
@@ -148,6 +149,10 @@ public final class PotpissersDefault extends JavaPlugin {
         pm.registerEvents(new PlayerOpenSignListener(), this);
         pm.registerEvents(new PlayerInteractListener(), this);
         // Claims end
+
+        // Cubecore sign start
+        getCommand("cubecoresign").setExecutor(new CubecoreSignOpCommand());
+        // Cubecore sign end
 
         // Default start
         if (taskTracker == 0)

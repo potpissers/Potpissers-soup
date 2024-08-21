@@ -115,3 +115,7 @@ commands:
   cubecorechest:
     description: created auto refilling chest
     permission: op
+
+  cubecoresign:
+    description: creates automatic command entering sign
+    permission: op
