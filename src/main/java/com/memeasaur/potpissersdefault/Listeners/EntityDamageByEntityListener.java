@@ -76,6 +76,13 @@ public class EntityDamageByEntityListener implements Listener {
                         e.setDamage(0);
                     }
                     // Explosions end
+                    // Fishing rod start
+                    case PROJECTILE -> {
+                        switch (e.getDamager().getType()) {
+                            case FISHING_BOBBER -> e.setCancelled(true);
+                        }
+                    }
+                    // Fishing rod end
                 }
                 // Combat-tag start
                 if (!isSelfInflicted) {
