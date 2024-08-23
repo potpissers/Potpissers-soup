@@ -63,6 +63,9 @@ public class EntityDamageByEntityListener implements Listener {
                                 return;
                             } // Claims
                         }
+                        // Soup start
+                        e.setDamage(Math.max(e.getDamage() - 1, 1));
+                        // Soup end
                         // Movement cd start
                         ItemStack weapon = p.getInventory().getItemInMainHand();
                         if (weapon.getEnchantmentLevel(Enchantment.KNOCKBACK) > 0) {

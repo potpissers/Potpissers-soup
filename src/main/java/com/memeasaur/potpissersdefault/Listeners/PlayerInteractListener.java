@@ -2,6 +2,7 @@ package com.memeasaur.potpissersdefault.Listeners;
 
 import com.memeasaur.potpissersdefault.Classes.PlayerData;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.enchantments.Enchantment;
@@ -51,6 +52,19 @@ public class PlayerInteractListener implements Listener {
                         }
                     }
                     // Movement cooldown end
+                    // Soup start
+                    case MUSHROOM_STEW -> {
+                        if (e.getHand() != null) {
+                            if (p.getHealth() == 20) {
+                                if (p.getFoodLevel() <= 20)
+                                    p.setFoodLevel(Math.max(p.getFoodLevel() + 6, 20));
+                            }
+                            else
+                                p.setHealth(Math.min(p.getHealth() + 8, 20));
+                            p.getInventory().setItem(e.getHand(), new ItemStack(Material.BOWL));
+                        }
+                    }
+                    // Soup end
                 }
             // Grapple end
         }
